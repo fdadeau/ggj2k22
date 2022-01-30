@@ -1,0 +1,546 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/****    ****/
+* {
+    box-sizing: border-box;
+}
+
+body > * {
+    display: none;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+body.level #level {
+    display: block;
+}
+body.level #choose {
+    display: block;
+    background-color: lightsalmon;
+}
+body.title #title {
+    display: block;
+    background-color: greenyellow
+}
+body.howtoplay #howtoplay {
+    display: block;
+    background-color: lightcoral;
+}
+
+
+/*** LEVEL DESIGN ***/
+#level {
+    background-color: lightblue;
+    background-image: url(../images/nuagefond.png);
+    background-size: 120vw 80vh ;
+    background-repeat: no-repeat;
+    background-position: -10vw 20vh;
+}
+
+#level > * {
+    position: absolute; 
+}
+
+#level[data-action]:after {
+    position: fixed;
+    box-sizing: border-box;
+    bottom: 10px;
+    right: 10px;
+    
+    border: solid 0.4vh #000;
+    padding: 0.2vh 0.2vh;
+    width: 10vh;
+    height: 10vh;
+    font-size: 3.5vh;
+    text-align: right;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: white;
+    background-image: url(../images/soul.png);
+    background-size: 8vh 8vh;
+    background-repeat: no-repeat;
+    background-position: 0.5vh 0.5vh;
+}
+#level:not(.withSoul)[data-action="Source"]:after {
+    content: '\2795';
+}
+#level:not(.withSoul)[data-action="Soul"]:after {
+    content: '\2B06';
+}
+#level.withSoul[data-action="TV"]:after, #level.withSoul[data-action="Exit"]:after {
+    content: '\2B07';
+}
+
+#level > div {
+    border: solid 1px #000;
+}
+
+#level #todo {
+    top: 0;
+    left: 5vh;
+    background-color: white;
+    box-sizing: content-box;
+    display: flex;
+    flex-direction: row;
+    margin: 0.5vw;
+    width: 30vw;
+    height: 8vh;
+    border: solid 0.5vh #000;
+    border-radius: 1vh;
+    box-shadow: 1vh 1vh 1vh #000;
+}
+#todo .soul {
+    display: inline-block;
+    transform: none;
+    width: 7vh;
+    height: 7vh; 
+    background-size: 7vh 7vh;
+    position: relative;
+}
+#todo .soul.done:after {
+    content: '\2705';
+    position: absolute; 
+    font-size: 3vh;
+    color: green;
+    bottom: 1px;
+    right: 1px;
+}
+.soul > div {
+    position: relative; 
+    display: inline-block;
+    width: 1.4vh;
+    height: 1.4vh;
+    border-radius: 50%;
+    border: solid 1px #000;
+    box-shadow: 1px 1px 1px #000;
+}
+
+
+
+/**** TIME ****/
+#level #timer {
+    top: 0;
+    margin: 0.5vw;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 5vh;
+    line-height: 1.2;
+    font-weight: bold;
+    padding: 1vh 2vh 0.5vh 2vh;
+    text-align: center;
+    right: 5vh;
+    color: black;
+    background-color: white;
+    border-radius: 3vh;
+    border: solid 1vh darkred;
+}
+#level #timer:before {
+    content: attr(data-value);
+}
+
+
+/**** TVs ****/
+#level .tv {
+    width: var(--sprite-width);
+    height: var(--sprite-height);
+    transform: translate(-50%,-50%);
+    background-image: url(../images/tv-spritesheet.png);
+    background-size: calc(var(--sprite-width) * 5) var(--sprite-height);
+    background-size: top left;
+    background-position-x: calc(var(--sprite-width) * -2);
+    border: none !important;
+}
+#level .tv.flip {
+    transform: translate(-50%, -50%) scale(-1,1);
+}
+#level .tv:before, #level .tv:after {
+    content: '';
+    width: 2vh;
+    height: 2vh;
+    border-radius: 50%;
+    position: absolute; 
+    bottom: 20%;
+    left: 25%;
+}
+#level .tv:after {
+    bottom: 18%;
+    left: 35%; 
+}
+#level .tv[data-kind="romantic_perverse"]:before {
+    background-color: blue;
+} 
+#level .tv[data-kind="romantic_perverse"]:after {
+    background-color: orange;
+} 
+#level .tv[data-kind="good_bad"]:before {
+    background-color: green;
+} 
+#level .tv[data-kind="good_bad"]:after {
+    background-color: red;
+} 
+#level .tv[data-kind="optimistic_pessimistic"]:before {
+    background-color: yellow;
+} 
+#level .tv[data-kind="optimistic_pessimistic"]:after {
+    background-color: violet;
+} 
+
+#level .tv.romantic {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+#level .tv.pessimistic {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+#level .tv.optimistic {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+#level .tv.good {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+#level .tv.bad {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+#level .tv.perverse {
+    animation: tvOn 1s infinite 0s;
+    animation-timing-function: step-start;    
+}
+@keyframes tvOn {
+    0% {
+        background-position-x: calc(var(--sprite-width) * -2);
+    }
+    10% {
+        background-position-x: calc(var(--sprite-width) * -1);
+    }
+    20% {
+        background-position-x: calc(var(--sprite-width) * 0);
+    }
+    40% {
+        background-position-x: calc(var(--sprite-width) * -1);
+    }
+    50% {
+        background-position-x: calc(var(--sprite-width) * -4);
+    }
+    60% {
+        background-position-x: calc(var(--sprite-width) * -3);
+    }
+    70% {
+        background-position-x: calc(var(--sprite-width) * -1);
+    }
+    80% {
+        background-position-x: calc(var(--sprite-width) * 0);
+    }
+    90% {
+        background-position-x: calc(var(--sprite-width) * -2);
+    }
+    
+}
+
+
+/*** Source ***/
+#level #source {
+    width: var(--sprite-width);
+    height: var(--sprite-height);
+    background-image: url(../images/robinetgouttes.png);
+    background-size: calc(var(--sprite-width) * 18) var(--sprite-height);
+    background-position-x: 0;
+    transform: translate(-50%, -100%);
+    border: none !important;
+}
+#level #source.anim {
+    animation-name: goutte;
+    animation-duration: 3s;
+    animation-timing-function: step-start;
+    animation-delay: 0s;
+    animation-fill-mode: backwards;
+}
+@keyframes goutte {
+    0% {
+        background-position-x: calc(var(--sprite-width) * 0);
+    }
+    10% {
+        background-position-x: calc(var(--sprite-width) * -1);
+    }
+    15% {
+        background-position-x: calc(var(--sprite-width) * -2);
+    }
+    17% {
+        background-position-x: calc(var(--sprite-width) * -3);
+    }
+    19% {
+        background-position-x: calc(var(--sprite-width) * -4);
+    }
+    22% {
+        background-position-x: calc(var(--sprite-width) * -5);
+    }
+    25% {
+        background-position-x: calc(var(--sprite-width) * -6);
+    }
+    28% {
+        background-position-x: calc(var(--sprite-width) * -7);
+    }
+    31% {
+        background-position-x: calc(var(--sprite-width) * -8);
+    }
+    34% {
+        background-position-x: calc(var(--sprite-width) * -9);
+    }
+    37% {
+        background-position-x: calc(var(--sprite-width) * -10);
+    }
+    40% {
+        background-position-x: calc(var(--sprite-width) * -11);
+    }
+    45% {
+        background-position-x: calc(var(--sprite-width) * -12);
+    }
+    50% {
+        background-position-x: calc(var(--sprite-width) * -13);
+    }
+    55% {
+        background-position-x: calc(var(--sprite-width) * -13);
+    }
+    60% {
+        background-position-x: calc(var(--sprite-width) * -14);
+    }
+    65% {
+        background-position-x: calc(var(--sprite-width) * -14);
+    }
+    70% {
+        background-position-x: calc(var(--sprite-width) * -15);
+    }
+    75% {
+        background-position-x: calc(var(--sprite-width) * -15);
+    }
+    80% {
+        background-position-x: calc(var(--sprite-width) * -16);
+    }
+    85% {
+        background-position-x: calc(var(--sprite-width) * -16);
+    }
+    90% {
+        background-position-x: calc(var(--sprite-width) * -17);
+    }
+    100% {
+        background-position-x: calc(var(--sprite-width) * -17);
+    }
+}
+
+#level #exit {
+    width: var(--sprite-width);
+    height: var(--sprite-height);
+    background-image: url(../images/grille.png);
+    background-size: var(--sprite-width) var(--sprite-height);
+    transform: translate(-50%, -50%);
+    border: none !important;
+}
+
+
+/*** Characteristics ***/
+.tv .dual {
+    position: absolute;
+    width: calc(var(--sprite-height) * 0.08);
+    height: calc(var(--sprite-height) * 0.08);
+    border-radius: 50%;
+    border: solid 1px #000;
+    box-shadow: -1px 1px 1px #000;
+}
+
+.dual.romantic {
+    background-color: blue;
+}
+.dual.perverse {
+    background-color: orange;
+}
+.dual.optimistic {
+    background-color: yellow;
+}
+.dual.pessimistic {
+    background-color: darkviolet;
+}
+.dual.bad {
+    background-color: red;
+}
+.dual.good {
+    background-color: green;
+}
+
+.tv .dual:nth-child(1) {
+    left: 15%;
+    bottom: 40%;
+}
+.tv .dual:nth-child(2) {
+    left: 9.5%;
+    bottom: 44%;
+}
+.tv .dual:nth-child(3) {
+    left: 8%;
+    bottom: 53%;
+}
+.tv .dual:nth-child(n+4) {
+    display: none;
+}
+
+
+
+/** Sprite **/
+
+@keyframes upAndDown {
+    0% {
+        margin-top: 0;
+    }
+    100% {
+        margin-top: 14px;
+    }
+}
+
+#player {
+    width: var(--sprite-width);
+    height: var(--sprite-height);
+    transform: translate(-50%,-100%) rotate(-15deg);    
+    background-image: url(../images/demoniauxnude.png);
+    background-size: contain;
+    border: none !important;
+    animation-name: upAndDown;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0s;
+}
+.withSoul #player {
+    background-image: url(../images/demoniauxavec2.png);
+    transform: translate(-50%,-100%);
+}
+#player.toRight {
+    transform: translate(-50%,-100%) scale(-1,1) rotate(-15deg) ;
+}
+.withSoul #player.toRight {
+    transform: translate(-50%,-100%) scale(-1,1);
+}
+
+
+/** Soul **/
+.soul {
+    text-align: center;
+    border: solid 1px #000;
+    background-color: lightskyblue;
+    width: var(--sprite-width);
+    height: var(--sprite-height);
+    transform: translate(-50%,-100%);    
+}
+.soul.carried {
+    display: none;
+}
+
+.soul {
+    background-color: transparent !important;
+    border: none !important;
+    background-image: url(../images/soul.png);
+    background-size: calc(var(--sprite-width) * 1) calc(var(--sprite-height) * 1);
+}
+.soul.optimistic {
+    background-image: url(../images/anim_optimistic.png);
+}
+.soul.pessimistic {
+    background-image: url(../images/anim_pessimistic.png);
+}
+.soul.good {
+    background-image: url(../images/anim_good.png);
+}
+.soul.bad {
+    background-image: url(../images/anim_bad.png);
+}
+.soul.romantic {
+    background-image: url(../images/anim_romantic.png);
+}
+.soul.perverse {
+    background-image: url(../images/anim_perverse.png);
+}
+
+.soul.optimistic, .soul.pessimistic, .soul.good, .soul.bad, .soul.romantic, .soul.perverse {
+    background-size: calc(var(--sprite-width) * 6) var(--sprite-height);
+    animation: watchTV 3s 1 2s; 
+    animation-fill-mode: forwards;
+    animation-timing-function: step-start;
+}
+
+@keyframes watchTV {
+    0% {
+        background-position-x: 0;
+    }
+    20% {
+        background-position-x: calc(var(--sprite-width) * -1);
+    }
+    40% {
+        background-position-x: calc(var(--sprite-width) * -2);
+    }
+    60% {
+        background-position-x: calc(var(--sprite-width) * -3);
+    }
+    80% {
+        background-position-x: calc(var(--sprite-width) * -4);
+    }
+    100% {
+        background-position-x: calc(var(--sprite-width) * -5);
+    }
+}
+
+#level canvas {
+    z-index: 10000;
+}
