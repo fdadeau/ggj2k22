@@ -32,6 +32,9 @@ export default class Soul {
         this.element.style.top = pos.y + "px";
         this.element.style.zIndex = pos.y - SOUL_SIZE.height | 0;
         this.element.className = "soul " + this.state;
+        if (this.tv.element.classList.contains("flip")) {
+            this.element.classList.add("flip");
+        }
     }
     takeFromTv() {
         this.state = SOUL_STATE.CARRIED;

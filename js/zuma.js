@@ -15,6 +15,7 @@ const LINE_Y = window.innerHeight * 0.15;
 const LINE_SPEED = 0.1;
 //
 const LINE_PADDING = 2;
+const OFFSET = { green: 0, blue: 200, red: 400, violet: 600, orange: 800, yellow: 1000 };
 
 export default class Zuma {
 
@@ -142,7 +143,6 @@ export default class Zuma {
             index = this.line.balls.findIndex(function(b,i,t) {
                 return i < t.length-2 && b.color == t[i+1].color && b.color == t[i+2].color;
             });
-            console.log("index sequence :", index);
         }
         if (index < 0) {
             return [];
@@ -282,16 +282,11 @@ export default class Zuma {
     render() {
         this.context.clearRect(0, 0, this.width, this.height);
         // draw line
-        this.line.balls.forEach(function(b) {
-            this.drawBall(b);
-
-            //this.context.fillStyle = b.color;
-            //this.context.fillRect(b.x - b.width / 2 + LINE_PADDING, b.y - b.height / 2 + LINE_PADDING, b.width-2*LINE_PADDING, b.height-2*LINE_PADDING);
-        }.bind(this));
+        for (let i=0; i < this.line.balls.length; i++) {
+            this.drawBall(this.line.balls[i]);
+        }
         // draw ball
         this.drawBall(this.ball);
-       // this.context.fillStyle = this.ball.color;
-       // this.context.fillRect(this.ball.x - this.ball.width / 2 + LINE_PADDING, this.ball.y - this.ball.height / 2 + LINE_PADDING, this.ball.width-2*LINE_PADDING, this.ball.height-2*LINE_PADDING);
     }
 
     drawBall(b) {
@@ -304,26 +299,8 @@ export default class Zuma {
         this.context.arc(b.x, b.y, size, 0, 2 * Math.PI);
         this.context.fill();
         
-        let offsetX = 0;
-        switch (b.color) {
-            case "red":
-                offsetX = 400;
-                break;
-            case "blue":
-                offsetX = 200;
-                break;
-            case "violet":
-                offsetX = 600;
-                break;
-            case "orange":
-                offsetX = 800;
-                break;
-            case "yellow":
-                offsetX = 1000;
-        }
+        let offsetX = OFFSET[b.color];
         this.context.drawImage(this.image, offsetX, 0, 200, 200, b.x - size, b.y - size, size*2, size*2);
-//        .fillStyle = b.color;
-//        this.context.fillRect(b.x - b.width / 2 + LINE_PADDING, b.y - b.height / 2 + LINE_PADDING, b.width-2*LINE_PADDING, b.height-2*LINE_PADDING);
     }
 
 }

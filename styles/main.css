@@ -572,6 +572,9 @@ button:hover {
     height: var(--sprite-height);
     transform: translate(-50%,-100%);    
 }
+.soul.flip {
+    transform: translate(-50%,-100%) scale(-1,1);    
+}
 .soul.carried {
     display: none;
 }

@@ -1,8 +1,10 @@
 import Level from './level.js';
 
+import LEVELS from './levels.js';
+
 document.addEventListener("DOMContentLoaded", function() {
         
-    let level = new Level(LEVEL1, document.getElementById("level"));
+    let level = new Level(LEVELS[0], document.getElementById("level"));
 
     document.addEventListener("keydown", function(e) {
         level.processKey("down", e.code);
@@ -46,19 +48,3 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     mainloop();
 });
-
-
-const LEVEL1 = {
-    time: 180,
-    TVs: [ { kind: "romantic_perverse", x: 40, y: 40 },
-           { kind: "good_bad", x: 14, y: 75 }, 
-           { kind: "optimistic_pessimistic", x: 80, y: 70 }
-        ],
-    player: { x: 50, y: 55 },
-    source: { x: 10, y: 60 },
-    exit: { x: 80, y: 40 },
-    goal: [ ["optimistic", "good", "perverse", "perverse"], [] ],
-}
-
-
-    
