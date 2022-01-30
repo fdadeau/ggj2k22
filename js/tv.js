@@ -50,7 +50,7 @@ export default class TV {
             this.audio.src = "../sounds/" + this.broadcast + ".wav";
             this.audio.play();
             this.render();
-            this.element.className = "tv " + this.broadcast;
+            this.element.classList.add(this.broadcast);
             this.delay = BROADCAST_DURATION * 1000;
             return;
         }

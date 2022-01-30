@@ -290,7 +290,7 @@ button:hover {
     border: none !important;
 }
 #level .tv.flip {
-    transform: translate(-50%, -50%) scale(-1,1);
+    transform: translate(-50%, -50%) scale(-1,1) !important;
 }
 #level .tv:before, #level .tv:after {
     content: '';
