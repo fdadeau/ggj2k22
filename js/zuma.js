@@ -18,7 +18,7 @@ const LINE_PADDING = 2;
 
 export default class Zuma {
 
-    constructor() {
+    constructor(demo) {
         // rendering info
         this.element = document.createElement("canvas");
         this.context = this.element.getContext("2d");
@@ -29,6 +29,9 @@ export default class Zuma {
         this.element.style.top = "0";
         this.center = {x: window.innerWidth/2, y: window.innerHeight - BALL_HEIGHT*1.2}
         this.reset();
+        this.image = new Image();
+        this.image.src = "";
+        this.demo = demo;
     }
 
     reset() {
@@ -276,17 +279,40 @@ export default class Zuma {
 
     }
 
-
     render() {
         this.context.clearRect(0, 0, this.width, this.height);
         // draw line
         this.line.balls.forEach(function(b) {
-            this.context.fillStyle = b.color;
-            this.context.fillRect(b.x - b.width / 2 + LINE_PADDING, b.y - b.height / 2 + LINE_PADDING, b.width-2*LINE_PADDING, b.height-2*LINE_PADDING);
+            this.drawBall(b);
+
+            //this.context.fillStyle = b.color;
+            //this.context.fillRect(b.x - b.width / 2 + LINE_PADDING, b.y - b.height / 2 + LINE_PADDING, b.width-2*LINE_PADDING, b.height-2*LINE_PADDING);
         }.bind(this));
         // draw ball
-        this.context.fillStyle = this.ball.color;
-        this.context.fillRect(this.ball.x - this.ball.width / 2 + LINE_PADDING, this.ball.y - this.ball.height / 2 + LINE_PADDING, this.ball.width-2*LINE_PADDING, this.ball.height-2*LINE_PADDING);
+        if (!this.ball.movement) {
+            this.ball.x = this.demo.position.x;
+            this.ball.y = this.demo.position.y;
+            this.ball.size = 20;
+        }
+        else {
+            this.ball.size = BALL_WIDTH/2;
+        } 
+
+        this.drawBall(this.ball);
+       // this.context.fillStyle = this.ball.color;
+       // this.context.fillRect(this.ball.x - this.ball.width / 2 + LINE_PADDING, this.ball.y - this.ball.height / 2 + LINE_PADDING, this.ball.width-2*LINE_PADDING, this.ball.height-2*LINE_PADDING);
+    }
+
+    drawBall(b) {
+        // Arc
+        this.context.beginPath();
+        this.context.fillStyle = b.color;
+        this.context.moveTo(b.x, b.y);
+        this.context.arc(b.x, b.y, b.size ? b.size : BALL_WIDTH/2, 0, 2 * Math.PI);
+        this.context.fill();
+        
+//        .fillStyle = b.color;
+//        this.context.fillRect(b.x - b.width / 2 + LINE_PADDING, b.y - b.height / 2 + LINE_PADDING, b.width-2*LINE_PADDING, b.height-2*LINE_PADDING);
     }
 
 }

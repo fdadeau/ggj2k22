@@ -14,7 +14,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // mouse listeners 
     document.addEventListener("click", function(e) {
-        level.click(e.clientX, e.clientY);
+        if (e.target.id == "btnStart") {
+            document.body.className = "level";
+            level.load();
+            level.reset(); 
+            e.stopPropagation();
+            return;   
+        }
+        if (e.target.id == "btnHowToPlay" || e.target.id == "btnCredits") {
+            document.body.className = "howtoplay";
+        }
+
+        if (e.target.classList.contains("btnBack")) {
+            document.body.className = "title";
+        }
+        if (document.body.classList.contains("level")) {
+            level.click(e.clientX, e.clientY);
+        }
     }.bind(this));
 
     let last = Date.now();

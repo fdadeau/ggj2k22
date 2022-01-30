@@ -21,7 +21,7 @@ export default class Level {
         this.exit = new Exit(0.01 * window.innerWidth * setup.exit.x, 0.01 * window.innerHeight * setup.exit.y);
 
         // ressource generator
-        this.zuma = new Zuma();
+        this.zuma = new Zuma(this.player);
         this.TVs = [];
         for (let tv of setup.TVs) {
             this.TVs.push(new TV(tv.kind, 0.01 * window.innerWidth * tv.x, 0.01 * window.innerHeight * tv.y));
@@ -30,16 +30,14 @@ export default class Level {
 
         // souls currently built
         this.souls = [];
-        this.load();
-        this.reset();
+
+        this.over = true;
     }
 
     // GAME LEVEL MANAGEMENT
 
     reset() {
-        this.done = [];
         this.over = false;
-      //  this.zuma.produced = ["perverse", "romantic", "good", "good", "bad", "optimistic", "pessimistic"];
     }
 
     load() {
@@ -131,6 +129,9 @@ export default class Level {
             soul.element.parentElement.removeChild(soul.element);
             let ok = this.todo.complete(soul);
             this.exit.play(ok);
+            if (this.todo.remaining == 0) {
+                this.over = true;
+            }
         }
     }
 
