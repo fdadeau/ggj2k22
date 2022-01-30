@@ -47,7 +47,7 @@ export default class TV {
     update(delta) {
         if (this.broadcast == null && this.tokens.length > 0) {
             this.broadcast = this.tokens.shift();
-            this.audio.src = "../sounds/" + this.broadcast + ".wav";
+            this.audio.src = "./sounds/" + this.broadcast + ".wav";
             this.audio.play();
             this.render();
             this.element.classList.add(this.broadcast);

@@ -12,7 +12,7 @@ export default class Source {
         this.element.style.left = (x | 0) + "px";
         this.position = { x: x, y: y };
         this.audio = new Audio();
-        this.audio.src = "../sounds/Robinet.wav";
+        this.audio.src = "./sounds/Robinet.wav";
     }
 
     collides(x, y, w, h) {

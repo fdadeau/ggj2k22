@@ -18,7 +18,7 @@ export default class Exit {
     }
 
     play(ok) {
-        this.audio.src = ok ? "../sounds/Tombe1-Bon.wav" : "../sounds/Tombe1-Mauvais.wav"; 
+        this.audio.src = ok ? "./sounds/Tombe1-Bon.wav" : "./sounds/Tombe1-Mauvais.wav"; 
         this.audio.play();
     }
 
