@@ -12,9 +12,8 @@ const LEVEL1 = {
     goal: [ ["optimistic", "good", "perverse", "perverse"], [] ],
 }
 
-export default LEVELS = 
-    [ 
-        LEVEL1
-    ];
+const LEVELS = [LEVEL1];
+
+export default LEVELS;
 
 
