@@ -30,7 +30,7 @@ export default class Zuma {
         this.center = {x: window.innerWidth/2, y: window.innerHeight - BALL_HEIGHT*1.2}
         this.reset();
         this.image = new Image();
-        this.image.src = "../images/icones.png";
+        this.image.src = "./images/icones.png";
         this.demo = demo;
     }
 
