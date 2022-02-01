@@ -1,7 +1,7 @@
 
 const TV_SIZE = { width: 220, height: 160 };
 
-const BROADCAST_DURATION = 12;
+const BROADCAST_DURATION = 11000;
 
 export default class TV {
 
@@ -16,6 +16,11 @@ export default class TV {
         if (x > window.innerWidth / 2) {
             this.element.classList.add("flip");
         }
+
+        this.progressbar = document.createElement("div");
+        this.progressbar.className = "progressbar";
+        this.progressbar.appendChild(document.createElement("div"));
+        this.element.appendChild(this.progressbar);
 
         this.kind = kind.split("_");
         this.element.dataset.kind = kind;
@@ -33,25 +38,27 @@ export default class TV {
     }
 
     addTokens(list) {
-        let before = this.tokens.length;
         for (let t of list) {
             if (this.kind[0] == t || t == this.kind[1]) {
-                this.tokens.push(t);
+                this.addToken(t);
             }
         }
-        if (this.tokens.length > before) {
-            this.render();
-        }
+    }
+    addToken(t) {
+        this.tokens.push(t);
+        let tElt = document.createElement("div");
+        tElt.className = "dual " + t;
+        this.element.appendChild(tElt);
+    }
+    removeToken() {
+        let t = this.tokens.shift();
+        this.element.removeChild(this.element.querySelector(".dual"));
+        return t;
     }
 
     update(delta) {
         if (this.broadcast == null && this.tokens.length > 0) {
-            this.broadcast = this.tokens.shift();
-            this.audio.src = "./sounds/" + this.broadcast + ".wav";
-            this.audio.play();
-            this.render();
-            this.element.classList.add(this.broadcast);
-            this.delay = BROADCAST_DURATION * 1000;
+            this.startBroadcast(this.removeToken());
             return;
         }
         if (this.broadcast != null) {
@@ -59,15 +66,28 @@ export default class TV {
                 this.soul.startWatching(this.broadcast);
             }
             this.delay -= delta;
-            if (this.delay < 0) {
-                this.element.classList.remove(this.broadcast);
-                this.broadcast = null;
-                this.audio.pause();
-                if (this.tokens.length == 0 && this.soul) {
-                    this.soul.stopWatching();
-                }
+            let percentage = 1 - (this.delay / (BROADCAST_DURATION));
+            this.progressbar.firstChild.style.width = (percentage*100 | 0) + "%";
+            if (this.delay <= 0) {
+                this.stopBroadcast();
             }
 
+        }
+    }
+
+    startBroadcast(broadcast) {
+        this.broadcast = broadcast;
+        this.audio.src = "./sounds/" + this.broadcast + ".wav";
+        this.audio.play();
+        this.element.classList.add(this.broadcast);
+        this.delay = BROADCAST_DURATION;
+    }
+    stopBroadcast() {
+        this.element.classList.remove(this.broadcast);
+        this.broadcast = null;
+        this.audio.pause();
+        if (this.tokens.length == 0 && this.soul) {
+            this.soul.stopWatching();
         }
     }
 
@@ -82,12 +102,7 @@ export default class TV {
     }
 
     isClose(x, y) {
-        return (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < TV_SIZE.height*TV_SIZE.height*0.5;
+        return (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < TV_SIZE.height*TV_SIZE.height*0.4;
     }
-
-    render() {
-        this.element.innerHTML = this.tokens.map(t => `<div class="dual ${t}"></div>`).join("");
-    }
-
     
 }

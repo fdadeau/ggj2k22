@@ -17,15 +17,15 @@ export default class Source {
 
     collides(x, y, w, h) {
         return !(
-            x + w/2 < this.position.x - SOURCE_SIZE.width / 6 ||
-            x - w/2 > this.position.x + SOURCE_SIZE.width / 6 ||
+            x + w/2 < this.position.x - SOURCE_SIZE.width / 10 ||
+            x - w/2 > this.position.x + SOURCE_SIZE.width / 10 ||
             y > this.position.y ||
             y < this.position.y - SOURCE_SIZE.height / 5
         );
     }
 
     isClose(x, y) {
-        return (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < SOURCE_SIZE.height*SOURCE_SIZE.height*0.25;
+        return (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < SOURCE_SIZE.width*SOURCE_SIZE.width/2;
     }
 
 }

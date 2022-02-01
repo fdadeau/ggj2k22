@@ -184,14 +184,16 @@ button:hover {
 #level[data-action]:after {
     position: fixed;
     box-sizing: border-box;
-    bottom: 10px;
-    right: 10px;
+    bottom: 1vh;
+    right: 1vh;
     
-    border: solid 0.4vh #000;
+    border: solid 0.5vh #000;
+    border-radius: 2vh;
     padding: 0.2vh 0.2vh;
-    width: 10vh;
-    height: 10vh;
-    font-size: 3.5vh;
+    width: 12vh;
+    height: 12vh;
+    font-size: 4vh;
+    line-height: 4.5vh;
     text-align: right;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
@@ -199,7 +201,7 @@ button:hover {
     background-image: url(../images/soul.png);
     background-size: 8vh 8vh;
     background-repeat: no-repeat;
-    background-position: 0.5vh 0.5vh;
+    background-position: 1vh 1vh;
 }
 #level:not(.withSoul)[data-action="Source"]:after {
     content: '\2795';
@@ -305,24 +307,43 @@ button:hover {
     bottom: 18%;
     left: 35%; 
 }
-#level .tv[data-kind="romantic_perverse"]:before {
+#level .tv[data-kind="romantic_perverse"]:before, .tv.romantic .progressbar > div {
     background-color: blue;
 } 
-#level .tv[data-kind="romantic_perverse"]:after {
+#level .tv[data-kind="romantic_perverse"]:after, .tv.perverse .progressbar > div {
     background-color: orange;
 } 
-#level .tv[data-kind="good_bad"]:before {
+#level .tv[data-kind="good_bad"]:before, .tv.good .progressbar > div {
     background-color: green;
 } 
-#level .tv[data-kind="good_bad"]:after {
+#level .tv[data-kind="good_bad"]:after, .tv.bad .progressbar > div {
     background-color: red;
 } 
-#level .tv[data-kind="optimistic_pessimistic"]:before {
+#level .tv[data-kind="optimistic_pessimistic"]:before, .tv.optimistic .progressbar > div {
     background-color: yellow;
 } 
-#level .tv[data-kind="optimistic_pessimistic"]:after {
+#level .tv[data-kind="optimistic_pessimistic"]:after, .tv.pessimistic .progressbar > div {
     background-color: violet;
 } 
+
+#level .tv .progressbar {
+    position: absolute; 
+    top: 5%;
+    height: 2vh;
+    border: solid 2px #000;
+    width: 40%;
+    left: 20%;
+    padding: 0;
+} 
+#level .tv .progressbar > div {
+    position: absolute; 
+    left: 0;
+    top: 0;
+    height: 100%;
+} 
+#level .tv.flip .progressbar {
+    transform: scale(-1,1);
+}
 
 #level .tv.romantic {
     animation: tvOn 1s infinite 0s;
@@ -508,15 +529,15 @@ button:hover {
     background-color: green;
 }
 
-.tv .dual:nth-child(1) {
+.tv .dual:nth-child(2) {
     left: 15%;
     bottom: 40%;
 }
-.tv .dual:nth-child(2) {
+.tv .dual:nth-child(3) {
     left: 9.5%;
     bottom: 44%;
 }
-.tv .dual:nth-child(3) {
+.tv .dual:nth-child(4) {
     left: 8%;
     bottom: 53%;
 }
@@ -542,7 +563,7 @@ button:hover {
     height: var(--sprite-height);
     transform: translate(-50%,-100%) rotate(-15deg);    
     background-image: url(../images/demoniauxnude.png);
-    background-size: contain;
+    background-size: var(--sprite-width) var(--sprite-height);
     border: none !important;
     animation-name: upAndDown;
     animation-duration: 0.5s;

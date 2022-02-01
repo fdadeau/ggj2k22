@@ -53,6 +53,11 @@ export default class Soul {
     pickup() {
         this.state = SOUL_STATE.CARRIED;
         this.element.className = "soul " + this.state;
+        if (this.tv) {
+            this.tv.soul = null;
+            this.tv = null;
+            this.isWatching = null;
+        }
     }
 
     startWatching(broadcast) {
@@ -69,7 +74,7 @@ export default class Soul {
 
 
     isClose(x, y) {
-        return this.state == SOUL_STATE.ON_THE_FLOOR && (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < SOUL_SIZE.width*SOUL_SIZE.width;
+        return (this.state == SOUL_STATE.WATCHING_TV || this.state == SOUL_STATE.ON_THE_FLOOR) && (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < SOUL_SIZE.width*SOUL_SIZE.width;
     }
 
     increase(caract) {

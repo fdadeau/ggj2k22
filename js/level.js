@@ -130,7 +130,7 @@ export default class Level {
             let ok = this.todo.complete(soul);
             this.exit.play(ok);
             if (this.todo.remaining == 0) {
-                this.over = true;
+                this.gameover(true);
             }
         }
     }
@@ -164,6 +164,11 @@ export default class Level {
     }
 
     getClosest(x, y) {
+        for (let s of this.souls) {
+            if (s.isClose(x, y)) {
+                return s;
+            }
+        } 
         for (let tv of this.TVs) {
             if (tv.isClose(x, y)) {
                 return tv;
@@ -175,11 +180,6 @@ export default class Level {
         if (this.exit.isClose(x, y)) {
             return this.exit;
         }
-        for (let s of this.souls) {
-            if (s.isClose(x, y)) {
-                return s;
-            }
-        } 
         return null; 
     }
 

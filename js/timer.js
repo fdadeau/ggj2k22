@@ -12,7 +12,7 @@ export default class Timer {
     update(delta) {
         this.remaining -= delta;
         if (this.remaining < 0) {
-            this.level.gameover();
+            this.level.gameover(false);
             return;
         }
         let d = this.remaining / 1000 | 0;
