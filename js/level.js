@@ -56,9 +56,14 @@ export default class Level {
     }
 
     gameover(b) {
-        // b ? showVictory() : showDefeat() ;
         this.over = true;
         this.TVs.forEach(function(tv) { tv.stopBroadcast(); });
+        if (b) {
+            let score = 1;
+            let go = document.getElementById("gameover");
+            go.dataset.score = score;
+            go.style.display = "block";
+        }
     }
     
 
@@ -132,11 +137,13 @@ export default class Level {
             this.souls.splice(idx, 1);
             soul.element.parentElement.removeChild(soul.element);
             this.exit.deliver(soul);
-            let ok = this.todo.complete(soul);
-            this.exit.play(ok);
-            if (this.todo.remaining == 0) {
-                this.gameover(true);
-            }
+            setTimeout(function() {
+                let ok = this.todo.complete(soul);
+                this.exit.play(ok);
+                if (this.todo.remaining == 0) {
+                    this.gameover(true);
+                }
+            }.bind(this), 2000);
         }
     }
 

@@ -1,6 +1,6 @@
 import Level from './level.js';
 
-import LEVELS from './levels.js';
+import { getLevel, levelSelection } from './levels.js';
 
 import preload from "./preload.js";
 
@@ -14,43 +14,79 @@ document.addEventListener("DOMContentLoaded", async function() {
         return;
     }
 
-    let level = new Level(LEVELS[0], document.getElementById("level"));
+    let currentLevel = -1;
+    let level = new Level(getLevel(0), document.getElementById("level"));
 
     document.addEventListener("keydown", function(e) {
         level.processKey("down", e.code);
-    }.bind(this));
+    });
     
     document.addEventListener("keyup", function(e) {
         level.processKey("up", e.code);
-    }.bind(this));
+    });
 
     // mouse listeners 
     document.addEventListener("click", function(e) {
+        e.stopPropagation();
         if (e.target.id == "btnStart") {
-            document.body.className = "level";
-            level.load();
-            level.reset(); 
-            e.stopPropagation();
+            show("choose")
             return;   
         }
         if (e.target.id == "btnHowToPlay") {
-            document.body.className = "howtoplay";
+            show("howtoplay");
             return;
         }
         if (e.target.id == "btnCredits") {
-            document.body.className = "credits";
+            show("credits");
+            return;
+        }
+
+        // game over buttons
+        if (e.target.id == "btnBackToMenu") {
+            document.getElementById("gameover").style.display = "none";
+            show("choose");
+            return;
+        }
+        if (e.target.id == "btnRestart") {
+            document.getElementById("gameover").style.display = "none";
+            level = new Level(getLevel(currentLevel), document.getElementById("level"));
+            level.load();
+            level.reset();
             return;
         }
 
         if (e.target.classList.contains("btnBack")) {
-            document.body.className = "title";
+            show("title");
             return;
         }
-        
+        if (e.target.classList.contains("btnLevel")) {
+            currentLevel = Number(e.target.dataset.num) - 1;
+            level = new Level(getLevel(currentLevel), document.getElementById("level"));
+            level.load();
+            level.reset(); 
+            show("level");
+            return;
+        }
+
         if (document.body.classList.contains("level")) {
             level.click(e.clientX, e.clientY);
+            return;
         }
-    }.bind(this));
+    });
+
+    // Menus management 
+    function show(which) {
+        if (which == "choose") {
+            let victories = localStorage.getItem("victories") || {};
+            levelSelection(document.getElementById("choose"), victories);
+        }
+        document.body.className = which;
+    }
+
+
+
+
+    // Game loop
 
     let last = Date.now();
     

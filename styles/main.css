@@ -74,7 +74,7 @@ body > * {
 body.level #level {
     display: block;
 }
-body.level #choose {
+body.choose #choose {
     display: block;
 }
 body.credits #credits {
@@ -188,6 +188,129 @@ h2, h3 {
 h3 {
     font-size: 5vh;
 }
+
+
+/**** GAME OVER AND LEVEL SELECTION MENU ****/
+#gameover {
+    display: none;
+    z-index: 10001;
+    width: 30vw;
+    height: 60vh;
+    left: 35vw;
+    top: 20vh;
+    border: solid 1vh darkred;
+    border-radius: 2vh;
+    box-shadow: 2vh 2vh 2vh black, 
+        -2vh 2vh 2vh #000, 
+        -2vh -2vh 2vh #000,
+        2vh -2vh 2vh #000;
+    background-color: white;
+}
+#gameover h2 {
+    font-size: 5vh;
+    font-weight: bold; 
+    margin: 2vh;
+}
+#gameover #score {
+    font-size: 5vh;
+    text-align: center;
+    color: gold;
+    margin: 3vh 0 7vh 0;
+}
+#gameover[data-score="0"] #score {
+    visibility: hidden;
+}
+#gameover .win, #gameover:not([data-score="0"]) .lost {
+    display: none;
+}
+#gameover:not([data-score="0"]) .win {
+    display: inline;
+}
+#gameover[data-score="1"] #score:before {
+    content: '\2605 \2606 \2606';
+}
+#gameover[data-score="2"] #score:before{
+    content: '\2605 \2605 \2606';
+}
+#gameover[data-score="3"] #score:before {
+    content: '\2605 \2605 \2605';
+}
+#gameover[data-score="0"] #btnNext {
+    display: none;
+}
+#gameover button {
+    font-size: 3vh;
+    width: 60%;
+    display: block;
+    position: relative;
+    transform: none;
+    margin: 2vh auto;
+}
+
+
+/**** LEVEL SELECTION ***/
+#choose > h2 {
+    margin: 10vh;
+}
+#choose > div {
+    display: flex;
+    flex-direction: horizontal;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: flex-start;
+    width: 80vw;
+    margin: 10vh auto;
+
+}
+
+#choose .btnLevel {
+    cursor: pointer;
+    width: 7vh;
+    position: relative;
+}
+
+#choose .btnLevel:before {
+    content: '';
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    display: block;
+    top: -3vh;
+    font-size: 2vh;
+    color: gold;
+}
+#choose .btnLevel:before {
+    content: '';
+}
+#choose .btnLevel[data-score="1"]:before {
+    content: '\2605 \2606 \2606';
+}
+#choose .btnLevel[data-score="1"]:before {
+    content: '\2605 \2605 \2606';
+}
+#choose .btnLevel[data-score="1"]:before {
+    content: '\2605 \2605 \2605';
+}
+#choose .btnLevel:before {
+    content: '';
+}
+#choose .btnLevel:after {
+    display: block;
+    box-sizing: border-box;
+    content: attr(data-num);
+    border: solid 1px #000;
+    line-height: 7vh;
+    font-size: 5vh;
+    width: 7vh;
+    height: 7vh;
+    text-align: center;
+    padding: 0;
+    background-color: white;
+    border-radius: 10px;
+}
+
+
 
 
 /*** LEVEL DESIGN ***/
