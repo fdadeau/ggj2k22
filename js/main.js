@@ -2,8 +2,18 @@ import Level from './level.js';
 
 import LEVELS from './levels.js';
 
-document.addEventListener("DOMContentLoaded", function() {
+import preload from "./preload.js";
+
+document.addEventListener("DOMContentLoaded", async function() {
         
+    try {
+        const resources = await preload();
+    }
+    catch (err) {
+        console.log(err);
+        return;
+    }
+
     let level = new Level(LEVELS[0], document.getElementById("level"));
 
     document.addEventListener("keydown", function(e) {
@@ -23,13 +33,20 @@ document.addEventListener("DOMContentLoaded", function() {
             e.stopPropagation();
             return;   
         }
-        if (e.target.id == "btnHowToPlay" || e.target.id == "btnCredits") {
+        if (e.target.id == "btnHowToPlay") {
             document.body.className = "howtoplay";
+            return;
+        }
+        if (e.target.id == "btnCredits") {
+            document.body.className = "credits";
+            return;
         }
 
         if (e.target.classList.contains("btnBack")) {
             document.body.className = "title";
+            return;
         }
+        
         if (document.body.classList.contains("level")) {
             level.click(e.clientX, e.clientY);
         }

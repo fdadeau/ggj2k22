@@ -1,5 +1,7 @@
 const EXIT_SIZE = { width: 120, height: 60 };
 
+
+
 export default class Exit {
 
     constructor(x, y) {
@@ -11,6 +13,11 @@ export default class Exit {
         this.position = { x: x, y: y };
         this.audio = new Audio();
         this.audio.loop = false; 
+    }
+
+    deliver(soul) {
+        this.element.innerHTML = "";
+        this.element.appendChild(soul.element);
     }
 
     isClose(x, y) {

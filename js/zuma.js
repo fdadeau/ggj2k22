@@ -199,7 +199,7 @@ export default class Zuma {
         this.line.balls.forEach(function(b, i) {
             if (i < splitIndex) {
                 b.movement = { x: 1, destX: b.x + indexes.length * BALL_WIDTH };
-                b.speed = 3*LINE_SPEED;
+                b.speed = 5*LINE_SPEED;
             }
         });
         this.line.state = LINE.JOINS;

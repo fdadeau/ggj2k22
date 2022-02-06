@@ -49,6 +49,11 @@ table {
 
 
 /****    ****/
+body {
+    font-size: 4vh;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -72,6 +77,9 @@ body.level #level {
 body.level #choose {
     display: block;
 }
+body.credits #credits {
+    display: block;
+}
 body.title #title {
     display: block;
 }
@@ -81,7 +89,7 @@ body.howtoplay #howToPlay {
 
 
 /***** ****/
-#title, #howToPlay, #choose {
+#title, #howToPlay, #choose, #credits {
     background-color: lightskyblue;
     background-image: url(../images/nuagefond.png);
     background-size: 120vw 110vh;
@@ -148,6 +156,8 @@ button {
     padding: 1vh;
     border-radius: 3vh;
     text-align: center;
+    font-size: inherit;
+    font-weight: inherit;
     cursor: pointer;
     transform: translate(-50%,-50%);
 }
@@ -157,7 +167,7 @@ button:hover {
 }
 
 
-#howToPlay {
+#howToPlay, #credits {
     font-size: 6vh;
     padding: 10vh;
 }
@@ -165,7 +175,19 @@ button:hover {
     left: 50%;
     bottom: 5vh;
 }
-
+#howToPlay p, #credits p {
+    display: block;
+    position: relative;
+    margin: 3vh;
+}
+h2, h3 {
+    font-size: 6vh;
+    font-weight: bold;
+    text-align: center;
+}
+h3 {
+    font-size: 5vh;
+}
 
 
 /*** LEVEL DESIGN ***/
@@ -497,6 +519,24 @@ button:hover {
     background-size: var(--sprite-width) var(--sprite-height);
     transform: translate(-50%, -50%);
     border: none !important;
+}
+#level #exit .soul {
+    position: relative;
+    top: 50% !important;
+    left: 50% !important;
+    animation: melting 2s 1 1s; 
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+@keyframes melting {
+    0% {
+        margin-top: 0;
+        clip-path: inset(0 0 0 0);
+    }
+    100% {
+        margin-top: var(--sprite-height);
+        clip-path: inset(0 0 100% 0);
+    }
 }
 
 

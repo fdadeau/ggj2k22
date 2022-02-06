@@ -2,6 +2,7 @@ import Player from "./player.js";
 import TV from "./tv.js";
 import Source from "./source.js";
 import Zuma from "./zuma.js";
+import BallGame from "./ballgame.js";
 import Soul from "./soul.js";
 import Timer from "./timer.js";
 import ToDoList from "./todolist.js";
@@ -21,11 +22,12 @@ export default class Level {
         this.exit = new Exit(0.01 * window.innerWidth * setup.exit.x, 0.01 * window.innerHeight * setup.exit.y);
 
         // ressource generator
-        this.zuma = new Zuma(this.player);
         this.TVs = [];
         for (let tv of setup.TVs) {
             this.TVs.push(new TV(tv.kind, 0.01 * window.innerWidth * tv.x, 0.01 * window.innerHeight * tv.y));
         }
+        this.zuma = new BallGame(this.player, this.TVs) //new Zuma(this.player);
+
         this.closest = null;
 
         // souls currently built
@@ -53,8 +55,10 @@ export default class Level {
         this.element.appendChild(this.zuma.element);
     }
 
-    gameover() {
+    gameover(b) {
+        // b ? showVictory() : showDefeat() ;
         this.over = true;
+        this.TVs.forEach(function(tv) { tv.stopBroadcast(); });
     }
     
 
@@ -127,6 +131,7 @@ export default class Level {
         if (idx >= 0) {
             this.souls.splice(idx, 1);
             soul.element.parentElement.removeChild(soul.element);
+            this.exit.deliver(soul);
             let ok = this.todo.complete(soul);
             this.exit.play(ok);
             if (this.todo.remaining == 0) {
