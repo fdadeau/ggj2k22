@@ -4,8 +4,12 @@ import { getLevel, levelSelection } from './levels.js';
 
 import preload from "./preload.js";
 
+const STORAGE_KEY = "victories";
+
 document.addEventListener("DOMContentLoaded", async function() {
         
+    document.oncontextmenu= function() { return false; };
+
     try {
         const resources = await preload();
     }
@@ -15,6 +19,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     let currentLevel = -1;
+
     let level = new Level(getLevel(0), document.getElementById("level"));
 
     document.addEventListener("keydown", function(e) {
@@ -49,9 +54,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         if (e.target.id == "btnRestart") {
             document.getElementById("gameover").style.display = "none";
-            level = new Level(getLevel(currentLevel), document.getElementById("level"));
-            level.load();
-            level.reset();
+            loadCurrentLevel();
             return;
         }
 
@@ -61,9 +64,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         }
         if (e.target.classList.contains("btnLevel")) {
             currentLevel = Number(e.target.dataset.num) - 1;
-            level = new Level(getLevel(currentLevel), document.getElementById("level"));
-            level.load();
-            level.reset(); 
+            loadCurrentLevel();
             show("level");
             return;
         }
@@ -77,19 +78,35 @@ document.addEventListener("DOMContentLoaded", async function() {
     // Menus management 
     function show(which) {
         if (which == "choose") {
-            let victories = localStorage.getItem("victories") || {};
+            let victories = localStorage.getItem(STORAGE_KEY) || "{}";
+            victories = JSON.parse(victories);
             levelSelection(document.getElementById("choose"), victories);
         }
         document.body.className = which;
     }
 
+    function loadCurrentLevel() {
+        level = new Level(getLevel(currentLevel), document.getElementById("level"), gameover);
+        level.load();
+        level.reset();
+    }
 
-
+    function gameover(b, score) {
+        if (b) {
+            let vic = localStorage.getItem(STORAGE_KEY) || "{}";
+            vic = JSON.parse(vic);
+            if (!vic[String(currentLevel+1)] || vic[String(currentLevel+1)] < score) {
+                vic[String(currentLevel+1)] = score;
+            }
+            localStorage.setItem("victories", JSON.stringify(vic));
+        }
+        let go = document.getElementById("gameover");
+        go.dataset.score = score;
+        go.style.display = "block";
+    }
 
     // Game loop
-
-    let last = Date.now();
-    
+    let last = Date.now();    
     function mainloop() {
         requestAnimationFrame(mainloop);
         let now = Date.now();

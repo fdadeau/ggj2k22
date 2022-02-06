@@ -11,6 +11,7 @@ const LEVEL0 = {
     source: { x: 10, y: 60 },
     exit: { x: 80, y: 40 },
     goal: [ [] ],
+    score: [60, 40, 20]
 }
 LEVELS.push(LEVEL0);
 const LEVEL1 = {
@@ -23,6 +24,7 @@ const LEVEL1 = {
     source: { x: 10, y: 60 },
     exit: { x: 80, y: 40 },
     goal: [ ["optimistic", "good", "perverse", "perverse"], [] ],
+    score: [180, 120, 60]
 }
 LEVELS.push(LEVEL1);
 LEVELS.push(LEVEL1);
@@ -39,9 +41,11 @@ function getLevel(n) {
 function levelSelection(chooseElement, victories) {
     chooseElement.innerHTML = "<h2>Choose level</h2>";
     let div = document.createElement("div");
+    console.log(victories);
     for (let i in LEVELS) {
-        let score = victories[i] || 0;
-        div.innerHTML += `<div class="btnLevel" data-num="${1*i+1}" data-score="${score}"></div>`;
+        let num = 1*i+1;
+        let score = victories[num] || 0;
+        div.innerHTML += `<div class="btnLevel" data-num="${num}" data-score="${score}"></div>`;
     }
     chooseElement.appendChild(div);
     chooseElement.innerHTML += "<button class='btnBack'>Back</button>";

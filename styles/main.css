@@ -90,16 +90,17 @@ body.howtoplay #howToPlay {
 
 /***** ****/
 #title, #howToPlay, #choose, #credits {
-    background-color: lightskyblue;
-    background-image: url(../images/nuagefond.png);
+    background: radial-gradient(circle at 60% 30%, #FFF, lightskyblue);
+    /*background-image: url(../images/nuagefond.png);
     background-size: 120vw 110vh;
     background-position: -10vw -5vh;
-    background-repeat: none;
+    background-repeat: none;*/
 }
+
 #title > *, #howToPlay > * {
     position: absolute; 
     font-size: 4vh;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     display: block;
 }
 #title img:nth-of-type(1) {
@@ -168,7 +169,7 @@ button:hover {
 
 
 #howToPlay, #credits {
-    font-size: 6vh;
+    font-size: 5vh;
     padding: 10vh;
 }
 .btnBack {
@@ -286,10 +287,10 @@ h3 {
 #choose .btnLevel[data-score="1"]:before {
     content: '\2605 \2606 \2606';
 }
-#choose .btnLevel[data-score="1"]:before {
+#choose .btnLevel[data-score="2"]:before {
     content: '\2605 \2605 \2606';
 }
-#choose .btnLevel[data-score="1"]:before {
+#choose .btnLevel[data-score="3"]:before {
     content: '\2605 \2605 \2605';
 }
 #choose .btnLevel:before {
@@ -316,7 +317,7 @@ h3 {
 /*** LEVEL DESIGN ***/
 #level {
     background-color: lightblue;
-    background-image: url(../images/nuagefond.png);
+    background-image: url(../images/nuagefond2.png);
     background-size: 120vw 80vh ;
     background-repeat: no-repeat;
     background-position: -10vw 20vh;

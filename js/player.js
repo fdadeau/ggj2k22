@@ -1,6 +1,10 @@
-const PLAYER_SPEED = 0.3;
+
+const PLAYER_SPEED = 0.4;
 
 const PLAYER_SIZE = { width: 555*0.3, height: 575*0.3 };
+
+const CAN_DROP = false;
+const CAN_EXCHANGE = true;
 
 export default class Player {
 
@@ -65,6 +69,11 @@ export default class Player {
         this.level.element.classList.add("withSoul");
     }
 
+    setOrientation(x) {
+        if (this.movement.x == 0 && this.movement.y == 0) {
+            this.element.classList[(x > 0 ? "remove" : "add")]("toRight");
+        }
+    }
 
     // processing of keyboard events
     processKey(upOrDown, code) {

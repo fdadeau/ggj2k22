@@ -10,7 +10,8 @@ import Exit from "./exit.js";
 
 export default class Level {
 
-    constructor(setup, elt) {
+    constructor(setup, elt, callback) {
+        this.setup = setup;
         this.element = elt;
         // 
         this.timer = new Timer(setup.time, this);
@@ -33,7 +34,10 @@ export default class Level {
         // souls currently built
         this.souls = [];
 
+        // is game over? 
         this.over = true;
+        // callback to notify game over
+        this.callback = callback;
     }
 
     // GAME LEVEL MANAGEMENT
@@ -58,12 +62,16 @@ export default class Level {
     gameover(b) {
         this.over = true;
         this.TVs.forEach(function(tv) { tv.stopBroadcast(); });
+        let score = 0, time = this.setup.time - this.timer.remaining/1000;
         if (b) {
-            let score = 1;
-            let go = document.getElementById("gameover");
-            go.dataset.score = score;
-            go.style.display = "block";
+            console.log({time});
+            for (let t of this.setup.score) {
+                if (time < t) {
+                    score++;
+                }
+            }
         }
+        this.callback(b, score);
     }
     
 
@@ -237,7 +245,7 @@ export default class Level {
 
     click(x, y) {
         if (!this.over) {
-            this.zuma.throwBallTo(x,y);
+            this.zuma.throwBallTo(x,y);            
         }
     }
 

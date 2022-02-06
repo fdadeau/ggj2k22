@@ -45,10 +45,32 @@ class BallGame {
 
     addAngel() {
         // TODO compute random start position
-        let x = -ANGEL_WIDTH;
-        let y = Math.random() * this.height | 0;
+        let pos = Math.random() * (this.width * 2 + this.height * 2) | 0;
+        let x, y;
+        if (pos < this.width) {
+            x = pos;
+            y = -ANGEL_HEIGHT;
+        }
+        else if (pos < this.width + this.height) {
+            y = pos - this.width;
+            x = this.width + ANGEL_WIDTH;
+        }
+        else if (pos < this.width * 2 + this.height) {
+            x = this.width * 2 + this.height - pos;
+            y = this.height + ANGEL_HEIGHT;
+        }
+        else {
+            x = -ANGEL_WIDTH;
+            y = this.width * 2 + this.height * 2 - pos;
+        }
         let altitude = 1;
-        let movement = { x: 1, y: y > this.height / 2 ? -0.3 : 0.3, z: 0.1, speed: ANGEL_SPEED }
+
+        let targetX = Math.random() * this.width / 3 + this.width / 3 | 0;
+        let targetY = Math.random() * this.height / 3 + this.height / 3 | 0;
+        
+        let dist = Math.sqrt((targetX-x)*(targetX-x)+(targetY-y)*(targetY-y));
+
+        let movement = { x: (targetX - x)/dist, y: (targetY - y)/dist, z: 0.1, speed: ANGEL_SPEED }
         let color = COLORS[Math.random()*COLORS.length | 0];
 
         let angel = { x, y, altitude, movement, color };
@@ -66,6 +88,8 @@ class BallGame {
         if (this.shot) {
             return;
         }
+        this.demonio.setOrientation(this.demonio.position.x < x ? -1 : 1);
+
         let startX = this.demonio.position.x;
         let startY = this.demonio.position.y - this.demonio.size.height / 2;
 
