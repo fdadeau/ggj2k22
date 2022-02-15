@@ -362,8 +362,8 @@ h3 {
 }
 #howToPlay #desc4 p:last-of-type {
     position: fixed;
-    width: 70vh;
-    height: 35vh;
+    width: 60vh;
+    height: 30vh;
     bottom: 0;
     right: 0;
     font-size: 80%;
