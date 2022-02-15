@@ -127,11 +127,16 @@ export default class Soul {
         ctx.drawImage(this.sprite, f * SPRITE_WIDTH, 0, SPRITE_WIDTH, (1-crop) * SPRITE_HEIGHT,  - ratio * this.size.width / 2 | 0, - (1-crop) * ratio * this.size.height | 0, ratio * this.size.width | 0, (1 - crop) * ratio * this.size.height | 0);
         ctx.restore();
         if (!crop) {
-            for (let i=0; i < this.caracteristics.length; i++) {
-                let size = ratio * this.size.width / 4.5 | 0;
-                let offsetX = OFFSET[COLORS[this.caracteristics[i]]];
-                ctx.drawImage(this.imgIcones, offsetX, 0, 202, 203, x - ratio * this.size.width / 2 + i * (size + 2) | 0, y - ratio * this.size.height | 0, size | 0, size | 0); 
-            }
+            this.displayCaracteristicsAt(ctx, x, y, ratio);
+        }
+    }
+
+    displayCaracteristicsAt(ctx, x, y, ratio) {
+        let size = ratio * this.size.width / 4.5 | 0;
+        let startX = x - (this.caracteristics.length / 2) * (size + 2);
+        for (let i=0; i < this.caracteristics.length; i++) {
+            let offsetX = OFFSET[COLORS[this.caracteristics[i]]];
+            ctx.drawImage(this.imgIcones, offsetX, 0, 202, 203, startX + i * (size + 2) | 0, y - ratio * this.size.height | 0, size | 0, size | 0); 
         }
     }
 

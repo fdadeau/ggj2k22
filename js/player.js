@@ -74,7 +74,11 @@ export default class Player {
     render(ctx) {
         let offsetX = (this.position.dir > 0) ? 0 : SPRITE_WIDTH;
         offsetX += (this.soul) ? SPRITE_WIDTH*2 : 0;
-        ctx.drawImage(this.sprite, offsetX, 0, SPRITE_WIDTH, SPRITE_HEIGHT, this.position.x - this.size.width * this.ratio / 2 | 0, this.position.y - this.offsetY - this.size.height * this.ratio | 0, this.size.width * this.ratio | 0, this.size.height * this.ratio | 0);
+        ctx.drawImage(this.sprite, offsetX, 0, SPRITE_WIDTH, SPRITE_HEIGHT, this.position.x - this.size.width * this.ratio / 2 | 0, this.position.y - this.offsetY * this.ratio - this.size.height * this.ratio | 0, this.size.width * this.ratio | 0, this.size.height * this.ratio | 0);
+        if (this.soul) {
+            let c = this.position.dir > 0 ? -1 : 1;
+            this.soul.displayCaracteristicsAt(ctx, this.position.x - c * (this.size.width * this.ratio / 5), this.position.y - this.ratio * this.size.height / 5 - this.offsetY * this.ratio, this.ratio);
+        }
     }
 
 
