@@ -25,9 +25,9 @@ document.addEventListener("DOMContentLoaded", async function() {
         resources = await preload(data, document.querySelector("#preload > div"));
         prepareTitleScreen();
 
-        currentLevel = 1;
-       loadCurrentLevel();
-          show("level");
+        //currentLevel = 1;
+        //loadCurrentLevel();
+        //show("level");
     }
     catch (err) {
         console.log(err);
