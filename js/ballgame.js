@@ -60,8 +60,8 @@ class BallGame {
     resize(oldW, oldH) {
         this.width = this.level.width;
         this.height = this.level.height;    
-        this.ANGEL_WIDTH = level.width * ANGEL_WIDTH | 0;
-        this.ANGEL_HEIGHT = level.width * ANGEL_WIDTH / ANGEL_RATIO | 0; 
+        this.ANGEL_WIDTH = this.level.width * ANGEL_WIDTH | 0;
+        this.ANGEL_HEIGHT = this.level.width * ANGEL_WIDTH / ANGEL_RATIO | 0; 
     }
 
     addAngel() {
@@ -122,6 +122,9 @@ class BallGame {
         if (this.shot) {
             return;
         }
+        x = x / window.innerWidth * this.width;
+        y = y / window.innerHeight * this.height;
+
         this.demonio.setOrientation(this.demonio.position.x > x ? -1 : 1);
 
         let c = this.demonio.position.dir > 0 ? -1 : 1;        

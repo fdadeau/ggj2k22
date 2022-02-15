@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", async function() {
     let resources = null;
 
     // disable right-click
-    document.oncontextmenu = function() { return false; };
-    document.ondblclick = function() { return false; };
+    document.oncontextmenu = function(e) { e.preventDefault(); return false; };
+    document.ondblclick = function(e) { e.preventDefault(); return false; };
 
     // preloading... (async)
     try {
@@ -144,6 +144,9 @@ document.addEventListener("DOMContentLoaded", async function() {
             victories = JSON.parse(victories);
             levelSelection(document.getElementById("choose"), victories);
         }
+        else if (which == "howTo") {
+            document.querySelector('#howToPlay input[type="radio"]').checked = true;
+        }
         // fade effect
         document.body.style.opacity = 0;
         setTimeout(function() {
@@ -198,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async function() {
         requestAnimationFrame(mainloop);
         let now = Date.now();
         let delta = now-last;
-        if (!level.over) {
+        if (level && !level.over) {
             level.update(delta) && level.render();
         }
         last = now;

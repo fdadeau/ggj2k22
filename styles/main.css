@@ -116,9 +116,9 @@ body.howtoplay #howToPlay {
     background: radial-gradient(circle at 60% 30%, #FFF, lightskyblue);
 }
 
-#title > *, #howToPlay > * {
+#title > * {
     position: absolute; 
-    font-size: 4vh;
+    font-size: 3vh;
     font-family: Arial, Helvetica, sans-serif;
     display: block;
 }
@@ -172,13 +172,14 @@ body.howtoplay #howToPlay {
 }
 button {
     position: absolute;
-    width: 30vh;
-    border: solid 1vh #000;
-    padding: 1vh;
-    border-radius: 3vh;
+    width: 22vh;
+    border: solid 0.8vh #000;
+    padding: 1vh 0vh;
+    border-radius: 2.6vh;
     text-align: center;
-    font-size: inherit;
+    font-size: 2.6vh;
     font-weight: inherit;
+    font-weight: bold;
     cursor: pointer;
     transform: translate(-50%,-50%);
 }
@@ -189,25 +190,232 @@ button:hover {
 
 
 #howToPlay, #credits {
-    font-size: 5vh;
+    font-size: 4vh;
     padding: 10vh;
+    text-align: center;
 }
 .btnBack {
     left: 50%;
-    bottom: 5vh;
+    bottom: 3vh;
 }
 #howToPlay p, #credits p {
     display: block;
     position: relative;
+    line-height: 1.6;
     margin: 3vh;
 }
 h2, h3 {
     font-size: 6vh;
     font-weight: bold;
     text-align: center;
+    margin-bottom: 7vh;
 }
 h3 {
     font-size: 5vh;
+}
+
+#howToPlay input[type="radio"] {
+    display: none;
+}
+#howToPlay label {
+    position: relative;
+    display: inline-block;
+    margin: 0.5vh;
+    cursor: pointer;
+    width: 3vh;
+    height: 3vh;
+    border: solid 2px #000;
+    border-radius: 50%;
+    background-color: transparent;
+}
+#howToPlay input:checked + label {
+    background-color: black;
+}
+#howToPlay article {
+    display: none;
+    position: relative;
+    text-align: left;
+    margin: 6vh auto 0 auto;
+    width: 90%;
+}
+#howToPlay #howTo1:checked ~ #desc1 {
+    display: block;
+}
+#howToPlay #howTo2:checked ~ #desc2 {
+    display: block;
+}
+#howToPlay #howTo3:checked ~ #desc3 {
+    display: block;
+}
+#howToPlay #howTo4:checked ~ #desc4 {
+    display: block;
+}
+#howToPlay #howTo5:checked ~ #desc5 {
+    display: block;
+}
+
+#howToPlay .btnNext, #howToPlay .btnPrevious {
+    position: absolute; 
+    top: -10vh;
+    display: block;
+    width: 6vh;
+    height: 6vh;
+    text-align: center;
+    border: none;
+    /*
+    vertical-align: middle;
+    line-height: 5.5vh;
+    border-radius: 10px;
+    background-color: white;
+    */
+    cursor: pointer;
+}
+#howToPlay .btnNext {
+    right: 0;
+}
+.btnPrevious:before, .btnNext:before {
+    content: '\2794';
+}
+#howToPlay .btnPrevious {
+    left: 0;
+    transform: scaleX(-1);
+}
+
+#howToPlay #desc1 span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 5vh;
+    height: 5vh;
+    margin-right: 0vh;
+    margin-left: 1vh;
+    background-image: url(../images/tokens-spritesheet.png);
+    background-position: top left;
+    background-size: 30vh 5vh;
+    background-position: 0 0;
+}
+#howToPlay #desc1 td span:first-child {
+    margin-right: 1vh;
+    margin-left: 0vh;
+}
+#howToPlay #desc1 span.evil {
+    background-position: -10vh 0;
+}
+#howToPlay #desc1 span.pessimism {
+    background-position: -15vh 0;
+}
+#howToPlay #desc1 span.optimism {
+    background-position: -25vh 0;
+}
+#howToPlay #desc1 span.romantism {
+    background-position: -5vh 0;
+}
+#howToPlay #desc1 span.perversity {
+    background-position: -20vh 0;
+}
+#howToPlay #desc1 p img[src*="demonio"] {
+    width: auto;
+    height: 15vh;
+    vertical-align: middle;
+}
+#howToPlay table {
+    width: auto;
+    margin: 0 auto;
+}
+#howToPlay #desc1 td {
+    padding: 1vh 1vh;
+}
+#howToPlay #desc1 td:first-child {
+    text-align: right;
+}
+#howToPlay #desc1 td:nth-child(2) {
+    text-align: center;
+}
+#howToPlay #desc2 img[src*="example-source"] {
+    width: 15vh;
+    margin-right: 4vh;
+    float: left;
+    height: auto;
+}
+#howToPlay #desc2 img[src*="demonio-titre"] {
+    position: absolute;
+    right: 0;
+    top: 10vh;
+    width: 15vh;
+    height: auto;
+}
+#howToPlay #desc2 p:nth-of-type(2) {
+    margin: 8vh 0;
+}
+#howToPlay #desc3 img[src*="example-tv"] {
+    display: block;
+    margin: 2vh auto;
+    width: 30vh;
+    height: auto;
+}
+#howToPlay #desc4 img[src*="example-angel"] {
+    float: left;
+    margin-right: 2vh;
+}
+#howToPlay #desc4 img[src*="example-succ"] {
+    float: right;
+    margin-left: 2vh;
+}
+#howToPlay #desc4 p:last-of-type {
+    position: fixed;
+    width: 70vh;
+    height: 35vh;
+    bottom: 0;
+    right: 0;
+    font-size: 80%;
+    background-image: url(../images/example-shoot.png);
+    background-size: 100% 100%;
+    text-align: center;
+}
+#howToPlay #desc5 img[src*="example-exit"] {
+    float: right;
+    width: 12vh;
+    height: auto;
+    margin-left: 2vh;
+}
+#howToPlay #desc5 img[src*="example-souls"] {
+    display: block;
+    width: auto;
+    height: 8vh;
+    margin: 1vh auto;
+}
+    
+.centered {
+    text-align: center;    
+}
+
+strong {
+    font-weight: bold;
+}
+em {
+    font-style: italic;
+}
+kbd {
+    border: solid 2px darkred;
+    border-radius: 10px;
+    padding: 2px;
+    font-family: Courier;
+    background-color: beige;
+}
+
+
+#credits img {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    right: 1vh;
+    width: 30vw;
+    height: auto;
+}
+#credits h2 {
+    margin-bottom: 10vh;
+}
+#credits p {
+    margin: 6vh;
 }
 
 
@@ -221,10 +429,10 @@ h3 {
     top: 20vh;
     border: solid 1vh darkred;
     border-radius: 2vh;
-    box-shadow: 2vh 2vh 2vh black, 
-        -2vh 2vh 2vh #000, 
+    box-shadow: 2vh 2vh 2vh black;
+/*        -2vh 2vh 2vh #000, 
         -2vh -2vh 2vh #000,
-        2vh -2vh 2vh #000;
+        2vh -2vh 2vh #000;*/
     background-color: white;
 }
 #gameover h2 {
@@ -236,7 +444,7 @@ h3 {
     font-size: 5vh;
     text-align: center;
     color: gold;
-    margin: 3vh 0 7vh 0;
+    margin: 4vh 0 7vh 0;
     height: 10vh;
 }
 #gameover:not([data-score]) #score, #gameover[data-score="0"] #score {
@@ -265,6 +473,7 @@ h3 {
 }
 #gameover button {
     font-size: 3vh;
+    font-weight: normal;
     width: 60%;
     display: block;
     position: relative;
