@@ -4,21 +4,40 @@ const SOUL_STATE = { CARRIED: "carried", ON_THE_FLOOR: "on_the_floor", WATCHING_
 
 const SOUL_TIME = 4;   // in seconds
 
-const SOUL_SIZE = { width: 80, height: 80 };
+const SOUL_WIDTH = 0.065;
+const SOUL_RATIO = 1;
+
+const SPRITE_WIDTH = 350;
+const SPRITE_HEIGHT = 350;
+
+const COLORS = { "romantic": "blue", "bad": "red", "optimistic": "yellow", "good": "green", "pessimistic": "violet", "perverse": "orange" };
+const OFFSET = { green: 0, blue: 202, red: 404, violet: 606, orange: 808, yellow: 1010 };
+
+const FRAMES = { 
+    "romantic": [0, 1, 2, 3, 14, 15], 
+    "bad": [0, 1, 2, 3, 10, 11], 
+    "good": [0, 1, 2, 3, 8, 9], 
+    "pessimistic": [0, 1, 2, 3, 12, 13], 
+    "optimistic": [0, 1, 2, 3, 6, 7], 
+    "perverse": [0, 1, 2, 3, 4, 5]
+}
+const NB_FRAMES = 6;
+const FRAME_DELAY = 700;
 
 export default class Soul {
 
-    constructor() {
-        // rendering info
-        this.element = document.createElement("div");
-        this.element.classList.add("soul");
-        this.element.style = "--sprite-width: " + SOUL_SIZE.width + "px; --sprite-height: " + SOUL_SIZE.height + "px;";
-
+    constructor(resources, level) {
         this.tv = null;
         this.time = 0;
         this.caracteristics = [];
         this.state = SOUL_STATE.CARRIED;
         this.isWatching = null;
+        this.sprite = resources["soul-spritesheet"];
+        this.imgIcones = resources["tokens-spritesheet"];
+        this.frame = 0;
+        this.frameDelay = 0;
+        this.level = level;
+        this.size = { width: this.level.width * SOUL_WIDTH | 0, height: this.level.width * SOUL_WIDTH / SOUL_RATIO | 0 };
     }  
 
     /**** Game actions ****/
@@ -26,19 +45,11 @@ export default class Soul {
     bindToTv(tv) {
         this.tv = tv;
         tv.soul = this;
+        this.position = tv.getSoulPosition();
         this.state = SOUL_STATE.WATCHING_TV;
-        let pos = tv.getSoulPosition();
-        this.element.style.left = pos.x + "px";
-        this.element.style.top = pos.y + "px";
-        this.element.style.zIndex = pos.y - SOUL_SIZE.height | 0;
-        this.element.className = "soul " + this.state;
-        if (this.tv.element.classList.contains("flip")) {
-            this.element.classList.add("flip");
-        }
     }
     takeFromTv() {
         this.state = SOUL_STATE.CARRIED;
-        this.element.className = "soul " + this.state;
         this.tv.soul = null;
         this.tv = null;
         this.isWatching = null;
@@ -46,13 +57,9 @@ export default class Soul {
     drop(x, y) {
         this.state = SOUL_STATE.ON_THE_FLOOR;
         this.position = { x: x, y: y };
-        this.element.className = "soul " + this.state;
-        this.element.style.top = y + "px";
-        this.element.style.left = x + "px";
     }
     pickup() {
         this.state = SOUL_STATE.CARRIED;
-        this.element.className = "soul " + this.state;
         if (this.tv) {
             this.tv.soul = null;
             this.tv = null;
@@ -63,28 +70,20 @@ export default class Soul {
     startWatching(broadcast) {
         this.isWatching = broadcast;
         this.delay = SOUL_TIME * 1000;
-        this.element.classList.add(this.isWatching);
+        this.frameDelay = FRAME_DELAY;
     }
     stopWatching() {
-        this.element.classList.remove(this.isWatching);
         this.isWatching = null;
         this.delay = 0;
     }
 
-
-
     isClose(x, y) {
-        return (this.state == SOUL_STATE.WATCHING_TV || this.state == SOUL_STATE.ON_THE_FLOOR) && (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < SOUL_SIZE.width*SOUL_SIZE.width;
+        return (this.state == SOUL_STATE.WATCHING_TV || this.state == SOUL_STATE.ON_THE_FLOOR) && (x - this.position.x)*(x - this.position.x) + (y - this.position.y)*(y - this.position.y) < this.size.width*this.size.width;
     }
 
     increase(caract) {
         this.caracteristics.push(caract);
         this.caracteristics.sort();
-        let html = "";
-        for (let c of this.caracteristics) {
-            html += `<div class="dual ${c}"></div>`;
-        }
-        this.element.innerHTML = html;
     }
 
     update(delta) {
@@ -93,6 +92,45 @@ export default class Soul {
             if (this.delay < 0) {
                 this.increase(this.isWatching);
                 this.delay = SOUL_TIME * 1000;
+            }
+            this.frameDelay -= delta;
+            if (this.frameDelay <= 0) {
+                if (this.frame < NB_FRAMES - 1) {
+                    this.frame++;
+                }
+                this.frameDelay = FRAME_DELAY;
+            }
+        }
+        else {
+            this.frame = 0;
+        }
+    }
+
+    render(ctx) {
+        if (this.state == SOUL_STATE.CARRIED) {
+            return;
+        }
+        this.displayAt(ctx, this.position.x, this.position.y, this.level.getRatioFor(this.position.y));
+    }
+
+    displayAt(ctx, x, y, ratio, crop) {
+        ctx.save();
+        ctx.translate(x, y);
+        let c = 1;
+        if (this.tv && this.tv.flip) {
+            ctx.scale(-1, 1);
+        }
+        if (!crop) {
+            crop = 0;
+        }
+        let f = (this.isWatching) ? FRAMES[this.isWatching][this.frame] : 0;
+        ctx.drawImage(this.sprite, f * SPRITE_WIDTH, 0, SPRITE_WIDTH, (1-crop) * SPRITE_HEIGHT,  - ratio * this.size.width / 2 | 0, - (1-crop) * ratio * this.size.height | 0, ratio * this.size.width | 0, (1 - crop) * ratio * this.size.height | 0);
+        ctx.restore();
+        if (!crop) {
+            for (let i=0; i < this.caracteristics.length; i++) {
+                let size = ratio * this.size.width / 4.5 | 0;
+                let offsetX = OFFSET[COLORS[this.caracteristics[i]]];
+                ctx.drawImage(this.imgIcones, offsetX, 0, 202, 203, x - ratio * this.size.width / 2 + i * (size + 2) | 0, y - ratio * this.size.height | 0, size | 0, size | 0); 
             }
         }
     }

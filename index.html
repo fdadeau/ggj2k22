@@ -10,23 +10,17 @@
 
     <link rel="stylesheet" href="./styles/main.css" type="text/css">
 
-    <link rel="preload" as="image" href="./images/demoniauxavec2.png">
-    <link rel="preload" as="image" href="./images/demoniauxnude.png">
-    <link rel="preload" as="image" href="./images/icones.png">
-    <link rel="preload" as="image" href="./images/nuagefond2.png">
-
     <script type="module" src="./js/main.js"></script>
 
 </head>
 
-<body class="title">
+<body class="preload">
+
+    <div id="preload">
+        <div></div>
+    </div>
 
     <div id="title">
-        <img src="images/titre1.png">
-        <img src="images/titre2.png">
-        <img src="images/demoniauxavec2.png">
-        <img src="images/tvrose.png">
-        <div></div>
         <button id="btnStart">Start</button>
         <button id="btnHowToPlay">How to play</button>
         <button id="btnCredits">Credits</button>
@@ -35,20 +29,25 @@
     <div id="howToPlay">
         <h2>How to play</h2>
 
-        <p>Demonio is in charge of preparing souls for their next life. His jobs 
-            is to assign them caracteristics that are dual: good/bad, optimistic/pessimistic, 
-            romantic/perverse. 
+        <p>Prepare "empty" souls for their next life by giving them traits: 
+            good vs. bad, optimism vs. pessimism, romantism vs. perversity
         </p>
 
-        <p>Create a new "empty" soul by using the pump. </p>
+        <p>1. Create a new "empty" soul by using the pump. </p>
 
-        <p>Place the soul in front a TV for a sufficient time, to give it the expected caracteristics. </p>
+        <p>2. Place the soul in front a TV for a sufficient time, to give it the expected caracteristics. </p>
 
-        <p>TVs broadcast programs that will forge the souls' caracteristics. TV are powered by tokens
-            which determine the kind of programs that are displayed on the screen.
+        <p>3. Wait for angels or succubus to bring tokens that power the TV with specific programs.
         </p>
 
-        <p>Tokens are brought by little angels that can be shot by Demonio. </p>
+        <p>4. Shoot angels/succubus that bring undesired tokens. </p>
+
+        <p>5. Deliver the soul to the exit when it is ready!</p>
+
+        <p>The souls to build are displayed in the top-left corner. Caracteristics can be assigned in 
+            any order. Souls can be built in any order. Just take care of the time left to accomplish
+            the mission. Ready? Go!
+        </p>
 
         <button class="btnBack">Back</button>
     </div>
@@ -72,11 +71,12 @@
     <div id="level"></div>
 
     <div id="gameover">
-        <h2><span class="win">Victory</span><span class="lost">Defeat</span></h2>
+        <h2><span class="win">Victory</span><span class="lost">Defeat</span><span class="pause">Pause</span></h2>
         <div id="score"></div>
         <button id="btnNext">Next</button>
+        <button id="btnResume">Resume</button>
         <button id="btnRestart">Restart</button>
-        <button id="btnBackToMenu">Back</button>
+        <button id="btnBackToMenu">Back to menu</button>
     </div>
 
 </body>

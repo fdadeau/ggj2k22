@@ -3,26 +3,30 @@ const LEVELS = [];
 
 const LEVEL0 = {
     time: 60,
-    TVs: [ { kind: "romantic_perverse", x: 40, y: 40 },
-           { kind: "good_bad", x: 14, y: 75 }, 
-           { kind: "optimistic_pessimistic", x: 80, y: 70 }
+    TVs: [ { x: 40, y: 40 },
+           { x: 14, y: 75 }, 
+           { x: 80, y: 70 }
         ],
     player: { x: 50, y: 55 },
     source: { x: 10, y: 60 },
     exit: { x: 80, y: 40 },
-    goal: [ [] ],
+    delay: 6000,
+    tokens: ["optimistic"],
+    goal: [ ["optimistic"] ],
     score: [60, 40, 20]
 }
 LEVELS.push(LEVEL0);
 const LEVEL1 = {
     time: 180,
-    TVs: [ { kind: "romantic_perverse", x: 40, y: 40 },
-           { kind: "good_bad", x: 14, y: 75 }, 
-           { kind: "optimistic_pessimistic", x: 80, y: 70 }
+    TVs: [ { x: 40, y: 40 },
+           { x: 14, y: 75 }, 
+           { x: 80, y: 70 }
         ],
     player: { x: 50, y: 55 },
     source: { x: 10, y: 60 },
     exit: { x: 80, y: 40 },
+    delay: 3000,
+    tokens: ["optimistic", "good", "perverse", "bad", "pessimistic", "romantic"],
     goal: [ ["optimistic", "good", "perverse", "perverse"], [] ],
     score: [180, 120, 60]
 }

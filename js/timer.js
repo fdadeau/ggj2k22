@@ -2,11 +2,10 @@
 export default class Timer {
 
     constructor(time, level) {
-        this.element = document.createElement("div");
-        this.element.id = "timer";
         this.remaining = time * 1000; 
         this.displayed = time;
         this.level = level;
+        this.level.element.dataset.time = `${time / 60 | 0}:${("0" + (time % 60)).slice(-2) }`;
     }
 
     update(delta) {
@@ -18,7 +17,7 @@ export default class Timer {
         let d = this.remaining / 1000 | 0;
         if (d !== this.displayed) {
             this.displayed = d;
-            this.element.dataset.value = `${d / 60 | 0}:${("0" + (d % 60)).slice(-2) }`;
+            this.level.element.dataset.time = `${d / 60 | 0}:${("0" + (d % 60)).slice(-2) }`;
         }        
     } 
 

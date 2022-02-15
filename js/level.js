@@ -1,34 +1,47 @@
 import Player from "./player.js";
 import TV from "./tv.js";
 import Source from "./source.js";
-import Zuma from "./zuma.js";
 import BallGame from "./ballgame.js";
 import Soul from "./soul.js";
 import Timer from "./timer.js";
 import ToDoList from "./todolist.js";
 import Exit from "./exit.js";
 
+
+
 export default class Level {
 
-    constructor(setup, elt, callback) {
+    constructor(setup, elt, resources, callback) {
         this.setup = setup;
+        this.resources = resources;
+
         this.element = elt;
+        this.canvas = document.createElement("canvas");
+        this.canvas.id = "cvsGame"
+        this.context = this.canvas.getContext("2d");
+        this.width = this.canvas.width = window.innerWidth * 0.9; // / 2;
+        this.height = this.canvas.height = window.innerHeight * 0.9; // / 2;
+       
+        this.maxY = this.height * 0.9;
+        this.minY = this.height * 0.4;
+
         // 
         this.timer = new Timer(setup.time, this);
-        this.todo = new ToDoList(setup.goal);
-
-        this.player = new Player(this, 0.01 * window.innerWidth * setup.player.x, 0.01 * window.innerHeight * setup.player.y);
+        this.todo = new ToDoList(resources, this, setup.goal);
         //
-        this.source = new Source(0.01 * window.innerWidth * setup.source.x, 0.01 * window.innerHeight * setup.source.y);
-        this.exit = new Exit(0.01 * window.innerWidth * setup.exit.x, 0.01 * window.innerHeight * setup.exit.y);
+        this.player = new Player(resources, this, setup.player.x, setup.player.y);
+        //
+        this.source = new Source(resources, this, setup.source.x, setup.source.y);
+        this.exit = new Exit(resources, this, setup.exit.x, setup.exit.y);
 
         // ressource generator
         this.TVs = [];
         for (let tv of setup.TVs) {
-            this.TVs.push(new TV(tv.kind, 0.01 * window.innerWidth * tv.x, 0.01 * window.innerHeight * tv.y));
+            this.TVs.push(new TV(resources, this, tv.x, tv.y));
         }
-        this.zuma = new BallGame(this.player, this.TVs) //new Zuma(this.player);
+        this.zuma = new BallGame(resources, this, setup);
 
+        // closest element to the player
         this.closest = null;
 
         // souls currently built
@@ -38,6 +51,34 @@ export default class Level {
         this.over = true;
         // callback to notify game over
         this.callback = callback;
+
+        // button start game
+        let btnStart = document.createElement("button");
+        btnStart.innerHTML = "Start!";
+        btnStart.id = "btnStartLevel";
+
+        // append elements to current GUI
+        this.element.innerHTML = "";
+        this.element.appendChild(this.todo.element);
+        this.element.appendChild(this.canvas);
+        this.element.appendChild(btnStart);
+
+        // render initial layout
+        this.render();
+    }
+
+    resize() {
+        let oldW = this.width; 
+        let oldH = this.height;
+        this.width = this.canvas.width = window.innerWidth * 0.9; // / 2;
+        this.height = this.canvas.height = window.innerHeight * 0.9; // / 2;
+        this.maxY = this.height * 0.9;
+        this.minY = this.height * 0.4;
+        this.player.resize(oldW, oldH);
+        this.source.resize(oldW, oldH);
+        this.exit.resize(oldW, oldH);
+        this.zuma.resize(oldW, oldH);
+        this.TVs.forEach(function(tv) { tv.resize(oldW, oldH) });
     }
 
     // GAME LEVEL MANAGEMENT
@@ -46,25 +87,11 @@ export default class Level {
         this.over = false;
     }
 
-    load() {
-        this.element.innerHTML = "";
-        this.element.appendChild(this.timer.element);
-        this.element.appendChild(this.todo.element);
-        this.element.appendChild(this.source.element);
-        this.element.appendChild(this.exit.element);
-        for (let tv of this.TVs) {
-            this.element.appendChild(tv.element);
-        }
-        this.element.appendChild(this.player.element);
-        this.element.appendChild(this.zuma.element);
-    }
-
     gameover(b) {
         this.over = true;
         this.TVs.forEach(function(tv) { tv.stopBroadcast(); });
         let score = 0, time = this.setup.time - this.timer.remaining/1000;
         if (b) {
-            console.log({time});
             for (let t of this.setup.score) {
                 if (time < t) {
                     score++;
@@ -88,28 +115,22 @@ export default class Level {
         this.timer.update(delta);
         // ZUMA 
         this.zuma.update(delta);
-        // TV 
-        let benefits = this.zuma.getProduced();
-        if (benefits.length > 0) {
-            // dispatch benefits to TVs
-            this.TVs.forEach(function(tv) {
-                tv.addTokens(benefits);
-            });
-        }
+        // entry & exit 
+        this.source.update(delta);
+        this.exit.update(delta);
         // TV updates
-        this.TVs.forEach(function(tv) {
-            tv.update(delta);
-        });
+        for (let i=0; i < this.TVs.length; i++) {
+            this.TVs[i].update(delta);
+        };
         // PLAYER  
         this.player.update(delta);
         // SOULS
-        this.souls.forEach(function(s) {
-            s.update(delta);
-        });
-
+        for (let i=0; i < this.souls.length; i++) {
+            this.souls[i].update(delta);
+        };
 
         let old = this.closest;
-        this.closest = this.getClosest(this.player.position.x, this.player.position.y, this.player.size.width, this.player.size.height);
+        this.closest = this.getClosest(this.player.position.x, this.player.position.y, this.player.size.width * this.player.ratio, this.player.size.height * this.player.ratio);
         if (old != this.closest) {
             this.element.dataset.action = (this.closest != null) ? this.closest.constructor.name : "None";
         }
@@ -118,7 +139,23 @@ export default class Level {
     }
 
     render() {
-        this.zuma.render();
+        this.context.clearRect(0, 0, this.width, this.height);
+        this.exit.render(this.context);
+        for (let i=0; i < this.TVs.length; i++) {
+            this.TVs[i].render(this.context);
+        }
+        for (let i=0; i < this.souls.length; i++) {
+            this.souls[i].render(this.context);
+        }
+        if (this.player.position.y < this.source.position.y) {
+            this.player.render(this.context);
+            this.source.render(this.context);
+        }
+        else {
+            this.source.render(this.context);
+            this.player.render(this.context);
+        }
+        this.zuma.render(this.context);
     }
 
 
@@ -127,23 +164,20 @@ export default class Level {
      **************************************************************/
 
     createSoul() {
-        let soul = new Soul();
+        let soul = new Soul(this.resources, this);
         this.souls.push(soul);
-        this.source.element.classList.add("anim");
-        this.player.delay = 3000;
+        this.source.activate();
+        this.player.delay = 2000;
         this.source.audio.play();
         setTimeout(function() {
-            this.element.insertBefore(soul.element, this.zuma.element);
             this.player.pickupSoul(soul);
-            this.source.element.classList.remove("anim");
-        }.bind(this), 3000);
+        }.bind(this), 2000);
     }
 
     deliverSoul(soul) {
         let idx = this.souls.indexOf(soul);
         if (idx >= 0) {
             this.souls.splice(idx, 1);
-            soul.element.parentElement.removeChild(soul.element);
             this.exit.deliver(soul);
             setTimeout(function() {
                 let ok = this.todo.complete(soul);
@@ -169,18 +203,17 @@ export default class Level {
     /*** Collisions + proximity checks ***/
 
     collides(x, y, w, h) {
-        if (y > window.innerHeight * 5/6 || y < window.innerHeight / 2.5 || x < w/2 || x > window.innerWidth - w/2) {
+        if (y > this.maxY || y < this.minY || x < w/2 || x > this.width - w/2) {
             return true;
-        }
-        for (let tv of this.TVs) {
-            if (tv.collides(x, y, w, h)) {
-                return true;
-            }
         }
         if (this.source.collides(x, y, w, h)) {
             return true;
         }
         return false;
+    }
+
+    getRatioFor(y) {
+        return 0.7 + 0.3 * (y - this.minY) / (this.maxY - this.minY)
     }
 
     getClosest(x, y) {
@@ -210,10 +243,23 @@ export default class Level {
      **********************************/
 
     processKey(upOrDown, key) {
-        if (this.player.delay > 0) {
-            return;
+        if (!this.over && upOrDown == "down" && key == "Escape") {
+            this.over = !this.over;
+            let that = this;
+            this.TVs.forEach(function(tv) {
+                if (tv.audio) {
+                    if (that.over) { 
+                        tv.audio.pause();
+                    }
+                    else {
+                        tv.audio.play();
+                    }
+                }
+            });
+            this.callback();
         }
-        if (key == 'Space' && upOrDown == 'down') {
+
+        if (this.player.delay <= 0 && key == 'Space' && upOrDown == 'down') {
             if (this.closest != null) {
                 if (this.closest instanceof Source && !this.player.soul) {
                     this.createSoul();
