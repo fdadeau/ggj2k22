@@ -487,20 +487,18 @@ kbd {
     margin: 10vh;
 }
 #choose > div {
-    display: flex;
-    flex-direction: horizontal;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: flex-start;
-    width: 80vw;
+    display: block;
+    text-align: center;
+    width: 60vw;
     margin: 10vh auto;
 
 }
 
 #choose .btnLevel {
+    display: inline-block;
     cursor: pointer;
     width: 7vh;
+    margin: 3vw 3vw;
     position: relative;
 }
 
