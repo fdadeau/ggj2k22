@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demonio's Dirty Deeds</title>
+    <meta charset="utf-8">
+
+    <style>
+
+:root {
+    --size: 15vw;
+}
+
+div {
+    display: inline-block;
+    border: solid 1px #000;
+    padding: 1vw;
+    margin: 1vw;
+    width: var(--size);
+    height: var(--size);
+}
+
+div:before {
+    content: '';
+    display: block;
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+}
+div[class]:before {
+    background-image: url(./images/tokens-spritesheet.png);
+    background-size: calc(6 * var(--size)) var(--size);
+    
+}
+.optimistic:before, span[data-v1="optimistic"]:before, span[data-v2="optimistic"]:after {
+    background-position: calc(-5 * var(--size)) 0;
+}
+.perverse:before, span[data-v1="perverse"]:before, span[data-v2="perverse"]:after {
+    background-position: calc(-4 * var(--size)) 0;
+}
+.pessimistic:before, span[data-v1="pessimistic"]:before, span[data-v2="pessimistic"]:after {
+    background-position: calc(-3 * var(--size)) 0;
+}
+.evil:before, span[data-v1="evil"]:before, span[data-v2="evil"]:after {
+    background-position: calc(-2 * var(--size)) 0;
+}
+.romantic:before, span[data-v1="romantic"]:before, span[data-v2="romantic"]:after {
+    background-position: calc(-1 * var(--size)) 0;
+}
+
+#succubia, #angelo {
+    position: relative;
+    height: calc(2 * var(--size));
+    width: calc(2 * var(--size));
+}
+#succubia:before, #angelo:before {
+    display: block;
+    content: '';
+    position: relative;
+    background-image: url(./images/succubia-spritesheet.png);
+    background-repeat: none;
+    background-position: 0 0;
+    background-size: calc(4.8 * var(--size)) calc(8 * var(--size));
+    transform: scaleX(-1);
+    width: calc(1.2 * var(--size));
+    height: calc(2 * var(--size));
+}
+#angelo:before {
+    background-image: url(./images/angie-spritesheet.png);
+    background-size: calc(6.8 * var(--size)) calc(8 * var(--size));
+    width: calc(1.2 * var(--size));
+}
+
+span {
+    --size: 3vw;
+    display: block;
+    position: absolute;
+    height: var(--size);
+    width: calc(3 * var(--size));
+    right: 1vw;
+    top: 1vw;
+    top: calc(var(--size) * 1.5);
+}
+span:before, span:after {
+    content: '';
+    --size: 3vw;
+    display: inline-block;
+    background-image: url(./images/tokens-spritesheet.png);
+    background-size: calc(6 * var(--size)) var(--size);
+    background-position: 0 0;
+    background-repeat: none;
+    width: var(--size);
+    height: var(--size);
+    vertical-align: middle;
+}
+span:before {
+    --size: 5vw;
+    margin-right: 1vw;
+}
+span:nth-child(2) {
+    top: calc(var(--size) * 4.5);
+}
+span:nth-child(3) {
+    top: calc(var(--size) * 7.5);
+}
+
+
+    </style>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.body.innerHTML += 
+        '<div class="romantic"></div>'.repeat(6) +
+        '<div class="pessimistic"></div>'.repeat(6) +
+        '<div class="optimistic"></div>'.repeat(6) +
+        '<div class="perverse"></div>'.repeat(6) +
+        '<div class="good"></div>'.repeat(6) +
+        '<div class="evil"></div>'.repeat(6) +
+        '<div id="succubia"><span data-v1="evil" data-v2="good"></span><span data-v1="pessimistic" data-v2="optimistic"></span><span data-v1="perverse" data-v2="romantic"></span></div>' + 
+        '<div id="angelo"><span data-v1="good" data-v2="evil"></span><span data-v1="optimistic" data-v2="pessimistic"></span><span data-v1="romantic" data-v2="perverse"></span></div>';
+});
+    </script>
+</head>
+
+
+<body>
+
+
+</body>
+
+</html>
