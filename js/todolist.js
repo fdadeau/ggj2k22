@@ -4,8 +4,8 @@ export default class ToDoList {
 
     constructor(resources, level, list) {
         this.element = document.createElement("canvas");
-        this.element.width = 400;
-        this.element.style.width = "400px";
+        this.element.width = 450;
+        this.element.style.width = "450px";
         this.element.style.zIndex = 1001;
         this.element.height = 80;
         this.element.style.height = "80px";
