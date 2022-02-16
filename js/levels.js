@@ -123,6 +123,15 @@ const LEVEL7 = {
 LEVELS.push(LEVEL7);
 
 
+
+
+
+
+
+
+
+// Exported API
+
 function getLevel(n) {
     return (n >= 0 && n < LEVELS.length) ? LEVELS[n] : null;
 }

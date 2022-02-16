@@ -566,6 +566,13 @@ kbd {
 #level #btnStartLevel {
     left: 50%;
     top: 50%;
+    padding-bottom: 3vh;
+}
+#level #btnStartLevel:before {
+    display: block;
+    content: 'Level ' attr(data-level);
+    text-align: center;
+    margin: 3vh 0;
 }
 
 #level[data-action]:after {

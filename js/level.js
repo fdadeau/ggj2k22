@@ -56,6 +56,7 @@ export default class Level {
         let btnStart = document.createElement("button");
         btnStart.innerHTML = "Start!";
         btnStart.id = "btnStartLevel";
+        btnStart.dataset.level = this.element.dataset.level;
 
         // append elements to current GUI
         this.element.innerHTML = "";

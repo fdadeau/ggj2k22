@@ -37,9 +37,11 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // keyboard listeners 
     document.addEventListener("keydown", function(e) {
+        e.preventDefault();
         level.processKey("down", e.code);
     });
     document.addEventListener("keyup", function(e) {
+        e.preventDefault();
         level.processKey("up", e.code);
     });
 
@@ -171,8 +173,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     }
 
     function loadCurrentLevel() {
-        document.getElementById("level").innerHTML = "";
-        level = new Level(getLevel(currentLevel), document.getElementById("level"), resources, gameover);
+        let elt = document.getElementById("level");
+        elt.innerHTML = "";
+        elt.dataset.level = currentLevel + 1;
+        level = new Level(getLevel(currentLevel), elt, resources, gameover);
        // level.reset();
     }
 
