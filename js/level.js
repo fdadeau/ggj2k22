@@ -244,7 +244,7 @@ export default class Level {
      **********************************/
 
     processKey(upOrDown, key) {
-        if (!this.over && upOrDown == "down" && key == "Escape") {
+        if (!this.over && upOrDown == "down" && key == "KeyP") {
             this.over = !this.over;
             let that = this;
             this.TVs.forEach(function(tv) {
