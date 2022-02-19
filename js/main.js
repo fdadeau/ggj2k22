@@ -20,6 +20,10 @@ document.addEventListener("DOMContentLoaded", async function() {
     document.oncontextmenu = function(e) { e.preventDefault(); return false; };
     document.ondblclick = function(e) { e.preventDefault(); return false; };
 
+    let requestFullscreen = document.body.requestFullscreen || 
+                            document.body.webkitRequestFullscreen || 
+                            document.body.mozRequestFullscreen;
+
     // preloading... (async)
     try {
         resources = await preload(data, document.querySelector("#preload > div"));
@@ -38,11 +42,11 @@ document.addEventListener("DOMContentLoaded", async function() {
     // keyboard listeners 
     document.addEventListener("keydown", function(e) {
         e.preventDefault();
-        level.processKey("down", e.code);
+        level && level.processKey("down", e.code);
     });
     document.addEventListener("keyup", function(e) {
         e.preventDefault();
-        level.processKey("up", e.code);
+        level && level.processKey("up", e.code);
     });
 
     // screen listener 
@@ -60,7 +64,12 @@ document.addEventListener("DOMContentLoaded", async function() {
          *  ...on the "preload" page
          */
         if (e.target.id == "btnReady") {    // available once assets have been loaded
-            document.body.requestFullscreen();
+            try {
+                requestFullscreen();
+            }
+            catch (_e) {
+                console.log("Cannot switch to fullscreen mode.");
+            }
             show("title");
             return;
         }
